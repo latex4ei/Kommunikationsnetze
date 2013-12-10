@@ -211,7 +211,32 @@ $T_T = T_A + 2 (T_p + T_V)$
 Wirkungsgrad $\rho = \frac{T_S}{rT^* + T_S + T_A + 2 (T_P + T_V)}$
 
 
-Optimale Paketlänge  $L_{\ir opt} \aprox \sqrt{\frac{2R(T_P + T_V)}{p_B}} $
+Optimale Paketlänge  $L_{\ir opt} \approx \sqrt{\frac{2R(T_P + T_V)}{p_B}} $
+
+\subsection{ARQ Protokoll mit Folgenummern}
+
+ermöglicht das Erkennen von Sendewiederholungen falls ein ACK verloren geht. 
+
+\subsubsection{Stop \& Wait}
+
+Wirkungsgrad $\rho = \frac{1}{1 + \frac{2 R T_P}{L_M}}$  
+
+\subsection{Fensterprotokolle}
+
+\symbolbox{
+	\begin{tabular}{cl}
+	$w_S$ & Anzahl ausstehender ACKs \\
+	$SN_{\ir s1}$ & niedrigste Nummer der noch nicht quittierten Nachricht \\
+	$SN_{\ir s2}$ & Sendenummer der zuletzt quittierten Nachricht \\
+	$SN_{\ir E1}$ & Nummer der nächsten zu empfangenden Nachricht \\
+	$SN_{\ir E2}$ & max. mögl. Nr. der nächsten zu empf. Nachricht \\ 
+	\end{tabular}
+} 
+
+maximal mögliche Nr. der nächsten zu empfangenden Nachricht: \\
+$SN_{\ir E2} = SN_{\ir E1} + (w_E-1)$ \\ \\ 
+
+\subsubsection{Go-Back-N}
 
 
 % Ende der Spalten
