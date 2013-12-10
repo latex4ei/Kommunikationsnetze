@@ -186,6 +186,33 @@
 }
 
 
+\section{Protokolle}
+
+\subsection{ARQ Quittungsprotokoll}
+
+
+\symbolbox{
+	\begin{tabular}{cc}
+	 $p_M$ & Wahrscheinlichkeit das Message verloren geht \\
+	 $p_A$ & Wahrscheinlchkeit das ACK verloren geht 
+	\end{tabular}
+} 
+
+Wahrscheinlichkeit für korrekte Übertragung (ACK und Message): $p_S = (1 - p_M) (1 - p_A)$
+
+Fehlerwahrscheinlichkeit: $p_E= 1 - p_S$
+
+Mittelwert der Zahl der Sendeversuche pro $M$: $s = \frac{1}{1 - p_E}$
+
+$r = s - 1$
+
+$T_T = T_A + 2 (T_p + T_V)$
+
+Wirkungsgrad $\rho = \frac{T_S}{rT^* + T_S + T_A + 2 (T_P + T_V)}$
+
+
+Optimale Paketlänge  $L_{\ir opt} \aprox \sqrt{\frac{2R(T_P + T_V)}{p_B}} $
+
 
 % Ende der Spalten
 \end{multicols*}
