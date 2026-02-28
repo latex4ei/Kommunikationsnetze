@@ -1,247 +1,1083 @@
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-% Formelsammlung von LaTeX4EI									
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% LaTeX4EI Template for Cheat Sheets                                Version 1.1
 %
-% @encode: 	UTF-8, tabwidth = 4, newline = LF
-% @author:	Emanuel Regnath
-% @date:		
-%
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% Authors: Markus Hofbauer
+% Contact: info@latex4ei.de
+% Encode: UTF-8
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 
-%---------------------------------------%
-%			P R E A M B L E				%
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+% ======================================================================
+% Document Settings
+% ======================================================================
 
-% Document Class ===============================================================
-\documentclass[fs, footer]{latex4ei}
+% possible options: color/nocolor, english/german, threecolumn
+% defaults: color, english
+\documentclass[german]{latex4ei/latex4ei_sheet}
 
-\usepackage{multirow}			% Spaltenpaket
+% set document information
+\title{Kommunikationsnetze}
+\author{LaTeX4Ei}                    % optional, delete if unchanged
+\myemail{info@latex4ei.de}           % optional, delete if unchanged
+\mywebsite{www.latex4ei.de}          % optional, delete if unchanged
 
-\usepackage{tikz}				% Alle möglichen Zeichnungen
 
-\sisetup{per-mode = fraction}
-
-%---------------------------------------%
-%			Kommunikationsnetze 			%
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
-
-% DOCUMENT_BEGIN ===============================================================
+% ======================================================================
+% Begin
+% ======================================================================
 \begin{document}
 
-% Split in 4 Columns ===========================================================
-\begin{multicols*}{4}
+% Title
+% -
+\maketitle   % requires ./img/Logo.pdf
+
+
+% Section
+% -
+% ======================================================================
+% Kommunikationsnetze – Formelsammlung (vollständig)
+% ======================================================================
+
+\begin{minipage}{\linewidth}
+\section{Vermittlungsverfahren}
+
+\begin{sectionbox}
+\subsection{Grundgrößen}
+\begin{tablebox}{ll}
+Sendezeit & $T_S = \frac{L}{R}$ \\
+Ausbreitungsverzögerung & $T_P = \frac{s}{c}$ \\
+Verarbeitungsverzögerung & Zeit zur Header-Analyse und Routingentscheidung \\
+Warteschlangenverzögerung & Zeit, die ein Paket im Puffer wartet \\
+Round Trip Time & $RTT = 2(T_P + T_V) + T_A$
+\end{tablebox}
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Durchschalte-, Sendungs- und Paketvermittlung}
+\textbf{Gegeben}: $L_M, L_H, L_D, R, h, T_{P,ges}, T_{V,ges}$
+
+\begin{tablebox}{ll}
+Circuit Switching & $T_{CS} = \frac{L_M}{R} + T_{P,ges}$ \\
+Message Switching & $T_{MS} =
+h \cdot \frac{L_M + L_H}{R}
++ T_{P,ges}
++ T_{V,ges}$ \\
+Packet Switching & $T_{PS} =
+\frac{N(L_D + L_H)}{R}
++
+(h-1)\frac{L_D + L_H}{R}
++
+T_{P,ges}
++
+T_{V,ges}$
+\end{tablebox}
+
+Anzahl Pakete:
+
+$N = \left\lceil \frac{L_M}{L_D} \right\rceil$
+
+Für Optimierung:
+
+$N \approx \frac{L_M}{L_D}$
+
+Alternative Darstellung:
+
+$$
+T_{PS} =
+\frac{L_M}{R}
++
+\frac{L_M \cdot L_H}{L_D \cdot R}
++
+(h-1)\frac{L_D + L_H}{R}
++
+T_{P,ges}
++
+T_{V,ges}
+$$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Optimale Paketgröße}
+\begin{emphbox}
+$$
+L_D^* =
+\sqrt{\frac{L_M \cdot L_H}{h-1}}
+$$
+\end{emphbox}
+
+Optimale MTU:
+
+$MTU^* = L_D^* + L_H$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Store-and-Forward Relay (2 Hops)}
+Ein Paket wird vollständig empfangen, dann weitergeleitet.
+
+$$
+T_{e2e} = (T_{S1} + T_{P1}) + (T_{S2} + T_{P2})
+$$
+
+Falls ACKs/R\"uckkanal: analoge Sende- und Ausbreitungszeiten addieren.
+\end{sectionbox}
+\end{minipage}
+
 
 
-
-
-
-% TITLE ========================================================================
-\fstitle{Kommunikationsnetze}
-
-\section*{Allgemeines}
-
-\sectionbox{
-	\begin{center}
-		\Fbox{Quelle} $\ra$ \Fbox{Sender} $\ra$ \Fbox{Kanal} $\ra$ \Fbox{Empfänger} $\ra$ \Fbox{Senke}\\[1em]
-	\end{center}
-
-	\includegraphics[width = \columnwidth]{./img/transmission.pdf}
-
-}
-
-
-
-
-
-
-
-% SECTION ====================================================================================
-\section{Signale}
-\sectionbox{
-	\subsection{Arten von Signalen}
-	\begin{description}
-		\item[deterministisch:] durch Funktionen beschreibbar, enthalten kein Nachricht.
-		\item[stochastisch:] zufälliger Verlauf, überträgt Information
-	\end{description}
-	
-	
-	\includegraphics[width = \columnwidth]{./img/signals.pdf}
-
-	Vorteile digitales Signal: Kompression, Verschlüsselung, Fehlerkorrektur
-}
-
-
-\sectionbox{
-	\subsection{Abtasttheorem}	
-	Signal muss bandbegrenzt sein. \\ 
-
-	\emphbox{
-	Abtasttheorem nach Shannon \quad $f_{\ir a} \ge 2 f_{\ir S_{\ir max}}$
-	}
-}
-
-
-
-
-
-% SECTION ====================================================================================
-\section{Nachrichtenaustausch}
-
-\sectionbox{
-	 \symbolbox{
-	\begin{tabular}{cc}
-	 $T_S$ &  Sendedauer \\
-	 $T_P$ & Übertragungsdauer (Signal Propagation) \\
-	 $T_{V_i}$ & Verzögerungszeit im Knoten
-	\end{tabular}
-	 }
-
-	 Übertragungsdauer: $T_P = \frac{l}{c_{\ir Kanal}}$ \\
-
-	Sendedauer: $T_S = \frac{L}{R}$
-	%\begin{tabular}{lll}
-	 %& Circuit Switching & Packet Switching \\
-	%& Leitungsvermittlung & Paketvermittlung\\
-	%& (volle Belegung der Ressourcen) &  (Paket-Multiplex Gewinn)\\
-	%connection & Ende-zu-Ende Verbindung \\
-	% orientented &  & Ende-zu-Ende Verbindung aufbauen, in jedem NE: Pakete folgen einem festgelegten Weg, logische Verbindung \\
-	%connectionless & nicht möglich & in jedem NE: Zieldaten, die jedes Paket tragen muss werden ausgewertet
-	%\end{tabular}
-}
-
-
-
-
-
-% SECTION ====================================================================================
-\section{Verkehrstheorie} 
-
-\sectionbox{
-	\subsection{Zufallsverkehr} 
-
-	Poisson Prozess: $p_k (t) = \frac{t^k \lambda^k}{k!} \exp (- \lambda t)$
-
-}
-
-\sectionbox{
-	\subsection{Wartesystem M/M/N/$\infty$}
-	\symbolbox{
-		\begin{tabular}{cc}
-			$P_W$ & Wartewahrscheinlichkeit \\
-			$\Omega$ & durchn. Warteschlangenlänge \\
-			$T_W$ & durchschnittl. Wartezeit \\
-			$T_D$ & durchsch. Durchlaufzeit
-		\end{tabular}
-
-	} \\ \\
-	Druchlaufzeit: $T_D = T_W + h$
-
-
-
-	Zustandswahrscheinlichkeit: $P_x = P_0 \prod \limits^x_{i = 1} \frac{\lambda_{i-1}}{\mu_i}$
-
-	$\epsilon = \frac{1}{h}$ \quad $\lambda = \frac{1}{a}$
-
-
-	Angebot: $A = \frac{\lambda}{\epsilon} = \lambda \cdot h$
-
-
-	Sterberate $\mu_x = \begin{cases}
-	x\epsilon & \text{für } x = 1, 2, \ldots, N \\ N \epsilon & x = N, N+1, \ldots \infty
-	\end{cases}$ \\
-
-	Zustandsverteilung:
-
-	$p_x = \begin{cases}
-	p_0 \frac{A^x}{x!} & \text{für } x = 0,1 , \ldots, N \\ p_0 \frac{A^N}{N!} (\frac{A}{N})^{x-N} & \text{für } x = N, N+1, \ldots, \infty
-	\end{cases}$ \\ \\
-
-	Wartewahrscheinlichkeit:
-
-	$P_W = \sum \limits_{i=0}^{\infty} P_n (\frac{A}{N})^i = P_N \frac{N}{N-A} = \frac{\frac{A^i}{N!} \frac{N}{N-A}}{\sum \limits_{i = 0}^{N-1} \frac{A^i}{i!} + \frac{A^N}{N!} \frac{N}{N-A}}$ \\
-
-	mittlere Warteschlangenlänge:
-
-	$\Omega = \sum \limits^{\infty}_{x = N} (x - N) P_x = P_N \cdot \rho \frac{1}{(1- \rho)^2} = P_N \frac{\frac{A}{N}}{(1 - \frac{A}{N})^2}$ \\ \\
-
-	mittlere Wartezeit (Gesetz von Little) : $T_W = \frac{\Omega}{\lambda}$ \\ 
-
-
-
-	\subsubsection{Sonderfall M/M/1/$\infty$}
-
-	Wartewahrscheinlichkeit $P_W |_{N =1} = A$
-
-	Warteschlangenlänge: $\Omega |_{N=1} = \frac{\rho}{1 - \rho}$
-
-	Wartezeit: $T_W = \frac{\rho}{\lambda (1 - \rho)}$
-}
-
-\sectionbox{
-	\subsection{Verlustsystem M/M/N/-}
-
-	Zustandsverteilung: $p_x = \frac{\frac{A^x}{x!}}{\sum \limits_{k=0}^N \frac{A^k}{k!}}$ mit $x = 0, 1, 2, \ldots N$
-
-	Verlustwahrscheinlichkeit (Blockierung): $B = p N = \frac{\frac{A^N}{N!} }{\sum \limits_{k=0}^N \frac{A^k}{k!}}$
-}
-
-
-\section{Protokolle}
-
-\subsection{ARQ Quittungsprotokoll}
-
-
-\symbolbox{
-	\begin{tabular}{cc}
-	 $p_M$ & Wahrscheinlichkeit das Message verloren geht \\
-	 $p_A$ & Wahrscheinlchkeit das ACK verloren geht 
-	\end{tabular}
-} 
-
-Wahrscheinlichkeit für korrekte Übertragung (ACK und Message): $p_S = (1 - p_M) (1 - p_A)$
-
-Fehlerwahrscheinlichkeit: $p_E= 1 - p_S$
-
-Mittelwert der Zahl der Sendeversuche pro $M$: $s = \frac{1}{1 - p_E}$
-
-$r = s - 1$
-
-$T_T = T_A + 2 (T_p + T_V)$
-
-Wirkungsgrad $\rho = \frac{T_S}{rT^* + T_S + T_A + 2 (T_P + T_V)}$
-
-
-Optimale Paketlänge  $L_{\ir opt} \approx \sqrt{\frac{2R(T_P + T_V)}{p_B}} $
-
-\subsection{ARQ Protokoll mit Folgenummern}
-
-ermöglicht das Erkennen von Sendewiederholungen falls ein ACK verloren geht. 
-
-\subsubsection{Stop \& Wait}
-
-Wirkungsgrad $\rho = \frac{1}{1 + \frac{2 R T_P}{L_M}}$  
-
-\subsection{Fensterprotokolle}
-
-\symbolbox{
-	\begin{tabular}{cl}
-	$w_S$ & Anzahl ausstehender ACKs \\
-	$SN_{\ir s1}$ & niedrigste Nummer der noch nicht quittierten Nachricht \\
-	$SN_{\ir s2}$ & Sendenummer der zuletzt quittierten Nachricht \\
-	$SN_{\ir E1}$ & Nummer der nächsten zu empfangenden Nachricht \\
-	$SN_{\ir E2}$ & max. mögl. Nr. der nächsten zu empf. Nachricht \\ 
-	\end{tabular}
-} 
-
-maximal mögliche Nr. der nächsten zu empfangenden Nachricht: \\
-$SN_{\ir E2} = SN_{\ir E1} + (w_E-1)$ \\ \\ 
-
-\subsubsection{Go-Back-N}
-
-
-% Ende der Spalten
-\end{multicols*}
-
-% Dokumentende
+\begin{minipage}{\linewidth}
+\section{ARQ und Stop-and-Wait}
+
+\begin{sectionbox}
+\subsection{Wirkungsgrad}
+\begin{cookbox}{Begriffe}
+\item ARQ (Automatic Repeat reQuest): Fehlerkontrolle durch Wiederholung verlorener Pakete.
+\item Stop-and-Wait: Sender sendet genau ein Paket und wartet auf ACK.
+\end{cookbox}
+
+\begin{emphbox}
+$$
+\rho =
+\frac{T_S}{T_S + RTT}
+$$
+\end{emphbox}
+
+Mit $T_S = \frac{L}{R}$:
+
+$$
+\rho =
+\frac{L}{L + R \cdot RTT}
+$$
+
+Grenzfall $RTT \ll T_S$:
+
+$$
+\rho \to 1
+$$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Stop-and-Wait Ablauf}
+\begin{cookbox}{Zeitachsen-Rezept}
+\item Sender: Paket senden ($T_S$), dann warten.
+\item Ausbreitung: $T_P$ hin, Empfänger empfängt komplett.
+\item ACK zurück: $T_P$ zurück (plus ACK-Sendezeit falls gefordert).
+\item Nächstes Paket erst nach ACK.
+\end{cookbox}
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Durchsatz und Goodput}
+\begin{tablebox}{ll}
+Durchsatz & $T_P = \rho \cdot R$ \\
+Goodput & $G_P =
+\frac{L_D}{L_D + L_H}
+\cdot
+T_P$
+\end{tablebox}
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Fehlerwahrscheinlichkeiten}
+Bitfehler $\rightarrow$ Paketfehler ($L$ in bit):
+
+$$
+p_P =
+1 - (1 - p_B)^L
+$$
+
+Mittlere Wiederholungen (geometrisch):
+
+$$
+\frac{K}{N} =
+\frac{p_V}{1 - p_V}
+$$
+
+Wirkungsgrad mit Fehlern:
+
+$$
+\rho =
+\frac{T_S}
+{T_S + RTT + \frac{K}{N}(T_S + T_T)}
+$$
+
+ARQ mit max. Wiederholungen $Z_{max}$:
+
+Sei $p := p_P$ (Paketfehlerwahrscheinlichkeit pro Versuch).
+
+$$
+P(\text{verworfen}) = p^{Z_{max}+1}
+$$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\section{Fensterprotokolle}
+
+\begin{sectionbox}
+\subsection{Maximale effektive Fenstergröße}
+\begin{cookbox}{Begriffe}
+\item Sliding Window: Mehrere unbestätigte Pakete dürfen gleichzeitig im Kanal sein.
+\end{cookbox}
+
+$$
+W =
+\left\lceil
+\frac{T_S + RTT}{T_S}
+\right\rceil
+=
+\left\lceil
+\frac{RTT}{T_S} + 1
+\right\rceil
+$$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Mittlere Übertragungszeit}
+$$
+T_U =
+\frac{T_S + RTT}
+{\min(w_{Sm}, W)}
+$$
+
+Falls $w_{Sm} \ge W$:
+
+$T_U = T_S$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Maximales Fenster bei Fehlerfall}
+\begin{tablebox}{ll}
+Go-Back-N & $W^* =
+\left\lceil
+\frac{T_S + T_T}{T_S}
+\right\rceil$ \\
+Selective Repeat & $W^* =
+\left\lceil
+\frac{T_S + RTT + T_T}{T_S}
+\right\rceil$
+\end{tablebox}
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Bandwidth-Delay-Product}
+\begin{emphbox}
+$$
+BDP = R \cdot RTT
+$$
+\end{emphbox}
+
+Benötigte Fenstergröße:
+
+$$
+W \approx
+\frac{R \cdot RTT}{L} + 1
+$$
+
+Vollauslastung, falls:
+
+$$
+w_{Sm} \ge \frac{RTT}{T_S} + 1
+$$
+
+Kanalauslastungsformel:
+
+$$
+\rho_N = \frac{T_S W_S}{T_{ges}} \cdot \frac{L_N}{L}
+$$
+
+Maximale Auslastung:
+
+$$
+\rho_{n,max} = \frac{L_N}{L}
+$$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\section{Web Cache}
+
+\begin{sectionbox}
+\subsection{Auslastung}
+$$
+\rho =
+\frac{L \cdot a}{R}
+$$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{sectionbox}
+\subsection{Durchschnittliche Verzögerung}
+\begin{emphbox}
+$$
+T =
+h \cdot T_{Cache}
++
+(1-h)(T_{Cache} + T_{Server})
+$$
+\end{emphbox}
+
+M/M/1-Näherung:
+
+$$
+T_{Cache} = \frac{T_S}{1 - \rho}
+$$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\section{HTTP Verzögerung}
+\begin{sectionbox}
+\begin{cookbox}{Begriffe}
+\item Nicht persistent: Für jedes Objekt neue TCP-Verbindung.
+\item Persistent: Mehrere Objekte über eine TCP-Verbindung.
+\item Pipelining: Mehrere Requests ohne auf Antwort zu warten.
+\end{cookbox}
+
+DNS-Zeit:
+
+$$
+T_{DNS} =
+\sum_{i=1}^{n} RTT_i
+$$
+
+TCP 3-Way Handshake (Zeitbaustein):
+
+$$
+T_{HS} \approx RTT
+$$
+zzgl. Sendezeiten der Kontrollpakete (falls gefordert).
+
+Mit Sendezeiten:
+
+$$
+T_{HS} = T_S(\text{SYN}) + T_P + T_S(\text{SYN+ACK}) + T_P + T_S(\text{ACK}) + T_P
+$$
+
+Ein Objekt:
+
+$$
+T =
+T_{DNS}
++
+T_{HS}
++
+RTT_0
++
+T_S(\text{Request})
++
+T_S(\text{Response})
+$$
+
+Allgemein - Nicht persistent ($m$ Objekte):
+
+$$
+T_{ges} =
+T_{DNS}
++
+m(T_{HS} + RTT_0 + T_S(\text{Req}) + T_S(\text{Resp}))
+$$
+
+Persistent ohne Pipelining ($m$ Objekte):
+
+$$
+T_{ges} =
+T_{DNS}
++
+T_{HS}
++
+m(RTT_0 + T_S(\text{Req}) + T_S(\text{Resp}))
+$$
+
+Persistent mit Pipelining ($m$ Objekte):
+
+$$
+T_{ges} =
+T_{DNS}
++
+T_{HS}
++
+RTT_0
++
+\sum_{i=1}^{m} T_S(\text{Req}_i)
++
+\sum_{i=1}^{m} T_S(\text{Resp}_i)
+$$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\section{TCP}
+
+\begin{sectionbox}
+\subsection{Grundlagen: Congestion / Flow Control}
+\begin{cookbox}{Begriffe}
+\item Congestion Window (cwnd): Senderseitige Begrenzung unbestätigter Bytes.
+\item Congestion Control: Überlaufsteuerung im Netz.
+\item Flow Control: Überlaufsteuerung am Sender (Empfängerfenster).
+\item Jede TCP-Verbindung besitzt ein eigenes cwnd.
+\end{cookbox}
+
+$$
+CongWin
+\ge
+LastByteSent - LastByteAcked
+$$
+
+Mit Flow Control:
+
+$$
+\min\{RecvWin, CongWin\}
+\ge
+LastByteSent - LastByteAcked
+$$
+
+Maximale Datei ohne Wraparound:
+
+$2^{32}$ Byte $\approx 4.29$ GB
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\subsection{Slow Start}
+\begin{sectionbox}
+Exponentielles Wachstum:
+
+$cwnd_{k} = 2^k$
+
+Gesendete Segmente bis Phase $k$:
+
+$$
+\sum_{i=0}^{k} 2^i
+=
+2^{k+1} - 1
+$$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\subsection{Reno}
+\begin{sectionbox}
+Triple Duplicate ACK:
+
+$$
+ssthresh =
+\frac{cwnd}{2}
+$$
+
+$$
+cwnd =
+ssthresh + 3 \cdot MSS
+$$
+
+Timeout:
+
+$$
+ssthresh =
+\frac{cwnd}{2}
+$$
+
+$$
+cwnd = 1 \cdot MSS
+$$
+
+Congestion Avoidance (Additive Increase):
+
+$$
+cwnd = cwnd + 1 \cdot MSS \; \text{pro RTT}
+$$
+\end{sectionbox}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\subsection{Tahoe}
+\begin{sectionbox}
+Triple Duplicate ACK:
+
+$$
+ssthresh = \frac{cwnd}{2}
+$$
+
+$$
+cwnd = 1 \cdot MSS
+$$
+
+Danach Slow Start bis $ssthresh$.
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\subsection{Congestion Window}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+Maximales Fenster & $cwnd_{max} =
+\frac{RTT \cdot R}{MSS}$ \\
+Durchschnittliches Fenster & $cwnd_{avg} = 0.75 \cdot cwnd_{max}$ \\
+Durchschnittlicher Durchsatz & $D =
+\frac{cwnd_{avg}}{RTT}$
+\end{tablebox}
+
+Hinweis: $cwnd$ in Segmenten, f"ur Bytes: $cwnd \cdot MSS$
+\end{sectionbox}
+\end{minipage}
+
+
+
+\begin{minipage}{\linewidth}
+\subsection{Highspeed}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+Benötigte Segmente zur Linkauslastung & $\#Seg =
+\frac{RTT \cdot R}{MSS}$ \\
+TCP-Durchsatzformel & $D =
+\frac{1.22 \cdot MSS}
+{RTT \sqrt{L}}$ \\
+Nach Verlustwahrscheinlichkeit & $L =
+\left(
+\frac{1.22 \cdot MSS}
+{RTT \cdot D}
+\right)^2$
+\end{tablebox}
+
+Volle Auslastung: $D = R$
+
+RTT-Näherung: $RTT \approx 2T_p$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{Verkehrstheorie und Wartesysteme}
+
+\subsection{Kendall-Notation}
+\begin{sectionbox}
+A/B/N/K/M
+
+\begin{tablebox}{ll}
+A & Ankunftsprozess (M = exponential, D = deterministisch, G = allgemein) \\
+B & Bedienprozess \\
+N & Anzahl Server \\
+K & Systemkapazität \\
+M & Quellenanzahl
+\end{tablebox}
+
+Beispiele:
+
+$M/M/N/0/\infty$ : Verlustsystem  
+
+$M/M/1/\infty/\infty$ : Wartesystem  
+
+$G/G/K/0/\infty$ : allgemeines Verlustsystem
+
+Systemkapazität: $K = N + s$ mit $s$ = Anzahl Pufferplätze (Zustände $0..K$)
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Zufallsverkehr (Poisson)}
+\begin{sectionbox}
+Poisson-Prozess (Anzahl Ankünfte in Zeit $t$):
+
+$$
+P_k(t) = \frac{(\lambda t)^k}{k!} e^{-\lambda t}
+$$
+
+Erwartungswert:
+
+$$
+E[K(t)] = \lambda t
+$$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Grundgrößen}
+\begin{sectionbox}
+\begin{tablebox}{lll}
+$\lambda$ & Ankunftsrate & $\frac{1}{E[T_A]}$ \\
+$\varepsilon$ (oder $\mu$) & Bedienrate & $\frac{1}{E[T_H]}$ \\
+$A$ & Verkehrsangebot & $\frac{\lambda}{\varepsilon}$ (Erlang)
+\end{tablebox}
+
+\begin{tablebox}{ll}
+$\rho$ & $\frac{A}{N}$ (Auslastung)
+\end{tablebox}
+
+Definition:
+
+$1$ Erlang $= 1$ dauerhaft belegter Kanal
+
+Aus Beobachtungsdiagramm (1 Server):
+
+$$
+\hat{\rho} = \frac{t_{belegt}}{t_{gesamt}}, \quad A \approx \rho
+$$
+
+Stabilitätsbedingung:
+
+$A < N$
+
+Statisches Gleichgewicht (Flussbalance):
+
+$$
+\lambda_n p_n = \mu_{n+1} p_{n+1}
+$$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Erlang-B (M/M/N/0)}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+$p_x$ & $\frac{A^x}{x!} p_0$ \\
+Rekursion & $p_x = p_{x-1} \cdot \frac{A}{x}$ \\
+$p_0$ & $\frac{1}{\sum_{k=0}^{N} \frac{A^k}{k!}}$ \\
+Blockierwahrscheinlichkeit & $B = p_N = \frac{\frac{A^N}{N!}}{\sum_{k=0}^{N} \frac{A^k}{k!}}$ \\
+Effektive Ankunftsrate & $\lambda_{eff} = \lambda(1-B)$ \\
+Verarbeiteter Verkehr & $Y = A (1-B)$ \\
+Verlustverkehr & $A_{verl} = A \cdot B$
+\end{tablebox}
+Geburts-Tod-Raten (M/M/K/0):
+
+$$
+\lambda_n = \lambda
+$$
+
+$$
+\mu_n = n\mu \quad (n \le K)
+$$
+
+Rekursion:
+
+$$
+p_{n+1} = p_n \frac{\lambda}{(n+1)\mu}
+$$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{M/M/1 Wartesystem}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+$\rho$ & $\frac{\lambda}{\varepsilon}$ \\
+Stabilität & $\rho < 1$ \\
+Zustandswahrscheinlichkeit & $p_x = (1-\rho)\rho^x$ \\
+Mittlere Warteschlangenlänge & $\Omega = \frac{\rho^2}{1-\rho}$ \\
+Mittlere Systemlänge & $L = \frac{\rho}{1-\rho}$
+\end{tablebox}
+
+Little:
+
+$\lambda T_W = \Omega$
+
+$T_W = \frac{\Omega}{\lambda}$
+
+Mittlere Durchlaufzeit:
+
+$E[T_D] = T_W + h$
+\end{sectionbox}
+\end{minipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{M/M/N Wartesystem}
+\begin{sectionbox}
+$\rho = \frac{A}{N}$
+
+Wartewahrscheinlichkeit (Erlang-C):
+
+$$
+P_W =
+\frac{\frac{A^N}{N!} \cdot \frac{N}{N-A}}
+{\sum_{k=0}^{N-1} \frac{A^k}{k!} +
+\frac{A^N}{N!} \cdot \frac{N}{N-A}}
+$$
+
+Mittlere Warteschlangenl\"ange:
+
+$$
+\Omega =
+P_W \cdot
+\frac{A}{N-A}
+$$
+
+Mittlere Wartezeit (Gesetz von Little):
+
+$$
+T_W = \frac{\Omega}{\lambda}
+$$
+
+Latenzzeit (Durchlaufzeit):
+
+$$
+T_D = T_W + T_H = T_W + \frac{1}{\varepsilon}
+$$
+
+Wahrscheinlichkeit keine Wartezeit:
+
+$$
+P(\text{keine Wartezeit}) = 1 - P_W
+$$
+
+Wenn $A \ge N$:
+
+$P_W \to 1$
+
+$\Omega \to \infty$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Endliche Kapazität M/M/N/s}
+\begin{sectionbox}
+M/M/1/s ($K = s+1$ Zustände, $s$ Pufferplätze):
+
+$$
+p_n = p_0 \rho^n, \quad \rho=\frac{\lambda}{\mu}
+$$
+
+$$
+p_0 = \frac{1-\rho}{1-\rho^{s+1}} \quad (\rho \ne 1)
+$$
+
+Blockierung:
+
+$$
+B = p_s
+$$
+
+M/M/N/s (Geburts-Tod, $s+1$ Zustände):
+
+$$
+p_{n+1} = p_n \cdot \frac{\lambda}{\mu \min(n+1,N)} \quad (n \le s)
+$$
+
+Normierung:
+
+$$
+p_0 = \left(\sum_{n=0}^{s} \prod_{i=0}^{n-1} \frac{\lambda}{\mu\min(i+1,N)}\right)^{-1}
+$$
+
+Blockierung:
+
+$$
+B = p_s
+$$
+
+Wahrscheinlichkeit keine Wartezeit:
+
+$$
+P(\text{keine Wartezeit}) = \sum_{n=0}^{N-1} p_n \; (\text{PASTA})
+$$
+\end{sectionbox}
+\end{minipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{Graphentheorie}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+Grad eines Knotens & $deg(v)$ \\
+Handshaking-Lemma & $\sum_{v \in G} deg(v) = 2K$ \\
+Baum & $K = M - 1$ \\
+Adjazenzmatrix (ungerichtet) & $a_{ij} = a_{ji}$
+\end{tablebox}
+
+Ein Graph mit $M-1$ Kanten ist genau dann ein Baum, wenn er zusammenhängend ist.
+
+Euler-Kreis:
+
+Alle Knoten haben geraden Grad.
+
+Hamilton-Kreis:
+
+Jeder Knoten wird genau einmal besucht.
+
+Anzahl ungerader Knoten ist immer gerade.
+
+Vollständiger Graph: Anzahl Gerüste
+
+$$
+K_m: \; m^{m-2}
+$$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Minimum Spanning Tree}
+\begin{sectionbox}
+MST enthält:
+
+$M - 1$ Kanten
+
+Prim:
+
+Wähle jeweils kleinste angrenzende Kante.
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Shortest Path}
+
+\subsubsection{Dijkstra}
+\begin{sectionbox}
+Initialisierung:
+
+$D[s] = 0$
+
+$D[v] = \infty$
+
+Relaxation:
+
+$D[u] = \min(D[u], D[v] + c(v,u))$
+
+Nur gültig für $c(v,u) \ge 0$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsubsection{Bellman-Ford}
+\begin{sectionbox}
+Relaxiere alle Kanten:
+
+$D[v] = \min(D[v], D[u] + c(u,v))$
+
+Wiederhole:
+
+$M-1$ Iterationen
+
+Negative Zyklen, wenn nach $M-1$ Iterationen noch Verbesserung möglich.
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Maximaler Fluss}
+\begin{sectionbox}
+Max-Flow-Min-Cut:
+
+$F_{max} = \text{Kapazität des minimalen Schnitts}$
+
+\begin{emphbox}
+Flusserhaltung (innere Knoten):
+
+$$
+\sum f_{in} = \sum f_{out}
+$$
+
+Kapazitätsbedingung:
+
+$$
+0 \le f_{ij} \le c_{ij}
+$$
+\end{emphbox}
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{Routing}
+
+\subsection{Distance Vector}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+Routingtabelle & $RT = N \cdot L$ Byte \\
+Nachrichten im Netz & $\approx 2 K N L$ (Tabelle pro Kante)
+\end{tablebox}
+
+Update-Gleichung (Bellman-Ford):
+
+$$
+D_x(y) =
+\min_{v}
+\{ c(x,v) + D_v(y) \}
+$$
+
+Next Hop:
+
+$$
+v^* = \arg\min_v \{ c(x,v) + D_v(y) \}
+$$
+
+Count-to-Infinity Problem möglich.
+
+Gegenmaßnahmen: Split Horizon, Poison Reverse.
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{Link State}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+LSA-Größe & $LSA(k) = deg(k) \cdot L$ \\
+Flutung & Nachrichten: $N \cdot K$ \\
+Bytes gesamt & $\approx 4 K^2 L$ (bidirektional)
+\end{tablebox}
+
+LSR verwendet Dijkstra auf der vollständigen Topologie.
+
+LSA-Inhalt (typisch): Router-ID, Nachbarn + Linkkosten, Seq\#, Age.
+
+Fluten mit Hop-Count: mindestens Graphdurchmesser (in Hops).
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{IP und Subnetting}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+Anzahl IP-Adressen & $2^{32-n}$ \\
+Hostbits & $h = 32 - n$ \\
+Verwendbare Hosts & $2^h - 2$ \\
+Anzahl /24 Netze in /n & $2^{24-n}$
+\end{tablebox}
+
+Klassische Klassen:
+
+\begin{tablebox}{ll}
+Class A & /8 \\
+Class B & /16 \\
+Class C & /24
+\end{tablebox}
+
+Benötigte Hostbits:
+
+$$
+2^h \ge \text{benötigte Hosts} + 2
+$$
+
+CIDR Zerlegung:
+
+Netzadresse: alle Hostbits = 0  
+
+Broadcast: alle Hostbits = 1
+
+Longest Prefix Matching:
+
+Wähle größtes $n$.
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\subsection{NAT}
+\begin{sectionbox}
+NAT-Eintrag:
+
+(interne IP, interner Port)  
+$\leftrightarrow$  
+(externe IP, externer Port)
+
+Port Address Translation erlaubt mehrere interne Hosts mit gleicher externer IP.
+
+Eindeutigkeit:
+Externe IP + externer Port müssen eindeutig sein.
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{Allgemeine Begriffe}
+\begin{sectionbox}
+\begin{cookbox}{Mobilität}
+\item Home Agent, care-of-address, Triangle Routing.
+\end{cookbox}
+
+Kommunikationskette:
+
+\begin{emphbox}
+Quelle $\rightarrow$ Sender $\rightarrow$ Kanal $\rightarrow$ Empfänger $\rightarrow$ Senke
+\end{emphbox}
+
+\begin{tablebox}{ll}
+Adressarten & Public (global) vs. Private (lokal) \\
+QoS Bits & DSCP/ToS im IP-Header
+\end{tablebox}
+
+Kommunikationsarten:
+
+\begin{tablebox}{ll}
+Verbindungsorientiert & z.B. TCP \\
+Verbindungslos & z.B. UDP \\
+Durchschaltung & Circuit Switching \\
+Paketvermittlung & Packet Switching
+\end{tablebox}
+
+Traffic Matrix:
+
+$$
+TM_{ij} = \text{Verkehr von Quelle } i \text{ nach Ziel } j
+$$
+\end{sectionbox}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}{\linewidth}
+\section{Zuverlässigkeit und Verfügbarkeit}
+\begin{sectionbox}
+\begin{tablebox}{ll}
+$\lambda$ & $\frac{1}{MTTF}$ \\
+$\mu$ & $\frac{1}{MTTR}$ \\
+Verfügbarkeit & $a = \frac{MTTF}{MTTF + MTTR}$ \\
+Nichtverfügbarkeit & $e = 1-a$ \\
+Serienschaltung & $a_{ges} = \prod_i a_i$ \\
+Parallelschaltung & $a = 1 - \prod_i (1-a_i)$
+\end{tablebox}
+
+Falls alle Komponenten gleich:
+
+$$
+a_{ges} = a^n
+$$
+
+Jährliche Ausfallzeit:
+
+$t_{down} = e \cdot 365 \cdot 24 \cdot 60$
+\end{sectionbox}
+\end{minipage}
+
+
+% ======================================================================
+% End
 % ======================================================================
 \end{document}
