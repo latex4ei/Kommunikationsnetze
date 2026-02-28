@@ -601,7 +601,11 @@ $M/M/1/\infty/\infty$ : Wartesystem
 
 $G/G/K/0/\infty$ : allgemeines Verlustsystem
 
-Systemkapazität: $K = N + s$ mit $s$ = Anzahl Pufferplätze (Zustände $0..K$)
+Systemkapazität $K$: maximale Anzahl Kunden im System
+
+$K = N + s$ mit $N$ = Anzahl Server, $s$ = Anzahl Pufferplätze
+
+Anzahl Zustände: $K+1$ (Zustände $0, 1, \ldots, K$)
 \end{sectionbox}
 \end{minipage}
 
@@ -766,38 +770,42 @@ $\Omega \to \infty$
 \begin{minipage}{\linewidth}
 \subsection{Endliche Kapazität M/M/N/s}
 \begin{sectionbox}
-M/M/1/s ($K = s+1$ Zustände, $s$ Pufferplätze):
+M/M/1/s (1 Server, $s$ Pufferplätze):
+
+$K = 1 + s$ (Systemkapazität), Zustände: $0, 1, \ldots, K$ (also $K+1 = s+2$ Zustände)
 
 $$
-p_n = p_0 \rho^n, \quad \rho=\frac{\lambda}{\mu}
+p_n = p_0 \rho^n, \quad \rho=\frac{\lambda}{\mu}, \quad n=0,\ldots,K
 $$
 
 $$
-p_0 = \frac{1-\rho}{1-\rho^{s+1}} \quad (\rho \ne 1)
+p_0 = \frac{1-\rho}{1-\rho^{K+1}} = \frac{1-\rho}{1-\rho^{s+2}} \quad (\rho \ne 1)
 $$
 
 Blockierung:
 
 $$
-B = p_s
+B = p_K = p_{s+1}
 $$
 
-M/M/N/s (Geburts-Tod, $s+1$ Zustände):
+M/M/N/s (N Server, $s$ Pufferplätze, Geburts-Tod):
+
+$K = N + s$ (Systemkapazität), Zustände: $0, 1, \ldots, K$ (also $K+1 = N+s+1$ Zustände)
 
 $$
-p_{n+1} = p_n \cdot \frac{\lambda}{\mu \min(n+1,N)} \quad (n \le s)
+p_{n+1} = p_n \cdot \frac{\lambda}{\mu \min(n+1,N)} \quad (n \le K-1 = N+s-1)
 $$
 
 Normierung:
 
 $$
-p_0 = \left(\sum_{n=0}^{s} \prod_{i=0}^{n-1} \frac{\lambda}{\mu\min(i+1,N)}\right)^{-1}
+p_0 = \left(\sum_{n=0}^{K} \prod_{i=0}^{n-1} \frac{\lambda}{\mu\min(i+1,N)}\right)^{-1} = \left(\sum_{n=0}^{N+s} \prod_{i=0}^{n-1} \frac{\lambda}{\mu\min(i+1,N)}\right)^{-1}
 $$
 
 Blockierung:
 
 $$
-B = p_s
+B = p_K = p_{N+s}
 $$
 
 Wahrscheinlichkeit keine Wartezeit:
